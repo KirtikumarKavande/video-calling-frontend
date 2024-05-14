@@ -4,7 +4,8 @@ import { SocketContext } from "../context/SocketContext";
 const JoinRoom = () => {
   const { socket, user } = useContext(SocketContext);
   function joinRoomHandler() {
-    socket.emit("create-room",{userId:user._id});
+    console.log("logged", socket);
+    socket.emit("create-room", { userId: user ? user._id : null });
   }
   return (
     <button

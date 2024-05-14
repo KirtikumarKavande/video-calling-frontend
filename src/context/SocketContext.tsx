@@ -1,4 +1,3 @@
-
 import Peer from "peerjs";
 import React, { createContext, useState } from "react";
 import SocketIoClient, { Socket } from "socket.io-client";
@@ -11,25 +10,28 @@ export interface User {
   peer: Peer;
 }
 
-export interface SocketContextProps {
+interface SocketContextProps {
   socket: Socket;
-  user: Peer | null;
-  getUser:(id:Peer)=>void
+  user:Peer | null;
+  getUser: (peer: Peer) => void;
 }
 
-export const SocketContext = createContext<SocketContextProps | null>(null);
+export const SocketContext = createContext({
+  socket,
+  user: null,
+  getUser: () => {},
+} as SocketContextProps);
 
 function SocketProvider({ children }: { children: React.ReactNode }) {
-const [user,setUser]=useState(null)
-const getUser=(peer:Peer)=>{
-  console.log("inside",peer)
-  setUser(peer)
-}
+  const [user, setUser] = useState(null);
+  const getUser = (peer: Peer) => {
+    setUser(peer);
+  };
 
   const contextValue: SocketContextProps = {
     socket,
     user,
-    getUser
+    getUser,
   };
 
   return (
@@ -40,5 +42,3 @@ const getUser=(peer:Peer)=>{
 }
 
 export default SocketProvider;
-
-

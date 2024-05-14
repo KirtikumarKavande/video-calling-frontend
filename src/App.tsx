@@ -8,21 +8,19 @@ import { v4 as uuid } from "uuid";
 
 export default function App() {
   const socketContext = useContext(SocketContext);
+  console.log(socketContext)
   const navigate = useNavigate();
 
-  console.log("good",socketContext)
   useEffect(() => {
     const newUuid=uuid()
     const peer = new Peer(newUuid);
-    console.log("----------------",peer);
-      socketContext.getUser(peer);
     if (socketContext) {
 
+      socketContext.getUser(peer);
 
       socketContext.socket.on(
         "room-created",
         ({ roomId }: { roomId: string }) => {
-          console.log(roomId);
           navigate(`/${roomId}`);
         }
       );
