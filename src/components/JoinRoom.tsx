@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import { SocketContext } from "../context/SocketContext";
 
 const JoinRoom = () => {
-  const { socket } = useContext(SocketContext);
+  const { socket, user } = useContext(SocketContext);
   function joinRoomHandler() {
-    socket.emit("create-room");
+    socket.emit("create-room",{userId:user._id});
   }
   return (
     <button
