@@ -13,7 +13,11 @@ export default function App() {
 
   useEffect(() => {
     const newUuid=uuid()
-    const peer = new Peer(newUuid);
+    const peer = new Peer(newUuid,{
+      host: "localhost",
+      port: 9000,
+      path:"myapp"
+    });
     if (socketContext) {
 
       socketContext.getUser(peer);
