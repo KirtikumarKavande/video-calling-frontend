@@ -1,12 +1,33 @@
-function streamReducerFunction(state, action) {
-  switch (action.type) {
-    case "ADD_USER_STREAM":
-      return [...state, state.payload.stream];
-      return state;
-    case "REMOVE_USER_STREAM":
-      return { state };
-    default:
-      return { state };
-  }
+
+
+import { ADD_PEER, REMOVE_PEER } from "../components/Actions/user.actions";
+
+
+
+export type PeerState = Record<string, {stream: MediaStream}>;
+
+
+type PeerAction = {
+    type: typeof ADD_PEER,
+    payload: {peerId: string, stream: MediaStream}
+} | {
+    type: typeof REMOVE_PEER,
+    payload: {peerId: string}
 }
-export default streamReducerFunction;
+
+export const peerReducer = (state: PeerState, action: PeerAction) => {
+    switch(action.type) {
+        case ADD_PEER:
+            return {
+                ...state,
+                [action.payload.peerId]: {
+                    stream: action.payload.stream
+                }
+            }
+        case REMOVE_PEER:
+            //will see u later
+            return { ...state };
+        default:
+            return { ...state };
+    }
+}

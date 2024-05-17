@@ -1,14 +1,13 @@
-import React, { useContext, useEffect, useReducer } from "react";
+import React, { useContext, useEffect, } from "react";
 import { useParams } from "react-router-dom";
 import { SocketContext } from "../../context/SocketContext";
 import UserFeedPlayer from "../UserFeedPlayer";
-import streamReducerFunction from "../../reducers/user.reducer";
+
 
 const Room = () => {
   const { socket, user, stream } = useContext(SocketContext);
   const { roomId } = useParams();
 
-  const [usersStreams, dispatch] = useReducer(streamReducerFunction, {});
   useEffect(() => {
     if (user) {
       console.log("New user with id", user._id, "has joined room", roomId);
