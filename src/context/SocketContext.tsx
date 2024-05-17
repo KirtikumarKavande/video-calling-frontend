@@ -83,6 +83,7 @@ function SocketProvider({ children }: { children: React.ReactNode }) {
     user,
     getUser,
     stream,
+    usersStreams
   };
 
   return (
