@@ -17,7 +17,7 @@ export default function App() {
       host: "localhost",
       port: 9000,
       path:"myapp"
-    });
+    }); 
     if (socketContext) {
 
       socketContext.getUser(peer);

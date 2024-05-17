@@ -1,20 +1,27 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import { useParams } from "react-router-dom";
 import { SocketContext } from "../../context/SocketContext";
 import UserFeedPlayer from "../UserFeedPlayer";
+import streamReducerFunction from "../../reducers/user.reducer";
 
 const Room = () => {
-  const { socket, user,stream } = useContext(SocketContext);
+  const { socket, user, stream } = useContext(SocketContext);
   const { roomId } = useParams();
+
+  const [usersStreams, dispatch] = useReducer(streamReducerFunction, {});
   useEffect(() => {
     if (user) {
       console.log("New user with id", user._id, "has joined room", roomId);
       socket.emit("join-room", { roomId, userId: user._id });
     }
   }, [roomId, user, socket]);
-  return <div>
-    <UserFeedPlayer stream={stream}/>
-  </div>;
+  console.log("stream", stream);
+  return (
+    <div>
+      <div>logged in user stream</div>
+      <UserFeedPlayer stream={stream} />
+    </div>
+  );
 };
 
 export default Room;

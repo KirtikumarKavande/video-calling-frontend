@@ -9,34 +9,49 @@ const socket: Socket = SocketIoClient(ws_server);
 export interface User {
   peer: Peer;
 }
-
 interface SocketContextProps {
   socket: Socket;
   user: Peer | null;
   getUser: (peer: Peer) => void;
-  stream:MediaStream|null
-
+  stream: MediaStream | null;
 }
 
 export const SocketContext = createContext({
   socket,
   user: null,
   getUser: () => {},
-  stream: null!
+  stream: null!,
 } as SocketContextProps);
 
 function SocketProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState(null);
   const [stream, setStream] = useState<MediaStream>();
+  const peerConstructor = new Peer();
+
   const getUser = (peer: Peer) => {
     setUser(peer);
   };
-  useEffect(()=>{
-    fetchUserFeed()
-  },[])
+  useEffect(() => {
+    if (!user || !stream) return;
 
-  const fetchUserFeed = async() => {
-  const streamData= await navigator.mediaDevices.getUserMedia({
+    socket.emit("ready");
+    socket.on("user-joined", ({ userId }) => {
+      const call = peerConstructor.call(userId, stream);
+      console.log("call then call", call);
+      call.on("stream", () => {
+
+        
+    })
+    });
+    
+  }, [user, stream]);
+
+  useEffect(() => {
+    fetchUserFeed();
+  }, []);
+
+  const fetchUserFeed = async () => {
+    const streamData = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
     });
@@ -47,7 +62,7 @@ function SocketProvider({ children }: { children: React.ReactNode }) {
     socket,
     user,
     getUser,
-    stream
+    stream,
   };
 
   return (
