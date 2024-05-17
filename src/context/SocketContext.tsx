@@ -4,7 +4,7 @@ import SocketIoClient, { Socket } from "socket.io-client";
 import { addPeerAction } from "../components/Actions/user.actions";
 import { peerReducer } from "../reducers/user.reducer";
 
-const ws_server = "http://localhost:3000";
+const ws_server = import.meta.env.VITE_BASE_URL;
 
 const socket: Socket = SocketIoClient(ws_server);
 
@@ -30,7 +30,6 @@ function SocketProvider({ children }: { children: React.ReactNode }) {
   const [stream, setStream] = useState<MediaStream>();
   const [usersStreams, dispatch] = useReducer(peerReducer, {});
 
-
   const getUser = (peer: Peer) => {
     setUser(peer);
   };
@@ -41,34 +40,26 @@ function SocketProvider({ children }: { children: React.ReactNode }) {
       const call = user.call(userId, stream);
       console.log("call then call", call);
       call.on("stream", () => {
-        console.log("executed 1st")
+        console.log("executed 1st");
         dispatch(addPeerAction(userId, stream));
-
-
       });
-
-
     });
     user.on("call", (call) => {
       console.log("receiving a call");
       call.answer(stream);
       call.on("stream", () => {
         dispatch(addPeerAction(call.peer, stream));
-
-
-      })
-  })
+      });
+    });
 
     socket.emit("ready");
-
-   
   }, [user, stream]);
 
   useEffect(() => {
     fetchUserFeed();
   }, []);
 
-  console.log("usersStreams",usersStreams)
+  console.log("usersStreams", usersStreams);
 
   const fetchUserFeed = async () => {
     const streamData = await navigator.mediaDevices.getUserMedia({
@@ -83,7 +74,7 @@ function SocketProvider({ children }: { children: React.ReactNode }) {
     user,
     getUser,
     stream,
-    usersStreams
+    usersStreams,
   };
 
   return (

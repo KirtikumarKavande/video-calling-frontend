@@ -14,8 +14,8 @@ export default function App() {
   useEffect(() => {
     const newUuid=uuid()
     const peer = new Peer(newUuid,{
-      host: "localhost",
-      port: 9000,
+      host: "https://video-calling-app-v1q9.onrender.com",
+      port: import.meta.env.VITE_PEER_PORT||9000,
       path:"myapp"
     }); 
     if (socketContext) {
