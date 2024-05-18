@@ -4,7 +4,7 @@ import SocketIoClient, { Socket } from "socket.io-client";
 import { addPeerAction } from "../components/Actions/user.actions";
 import { peerReducer } from "../reducers/user.reducer";
 
-const ws_server ="https://video-calling-app-v1q9.onrender.com";
+const ws_server ="wss://video-calling-app-v1q9.onrender.com";
 
 const socket: Socket = SocketIoClient(ws_server);
 
