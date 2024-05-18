@@ -15,8 +15,9 @@ export default function App() {
     const newUuid=uuid()
     const peer = new Peer(newUuid,{
       host: "https://video-calling-app-v1q9.onrender.com",
-      port: import.meta.env.VITE_PEER_PORT||9000,
-      path:"myapp"
+      port: import.meta.env.VITE_PEER_PORT||443,
+      path:"myapp",
+      secure: true,
     }); 
     if (socketContext) {
 
